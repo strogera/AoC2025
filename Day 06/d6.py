@@ -14,15 +14,14 @@ def transpose(d):
     return ret
 
 with open("input.txt", "r") as inputFile:
-    inp = inputFile.read().splitlines()
-    ops = inp[-1].split()
-    inp = inp[:-1]
-    inpP2 = transpose(inp)
-    inp = list(zip(*[map(int, line.split()) for line in inp]))
+    apply = {'+': sum, '*': prod}
+    *inp, ops = inputFile.read().splitlines()
+    groupsP2 = transpose(inp)
+    groupsP1 = list(zip(*[map(int, line.split()) for line in inp]))
 
     p1, p2 = 0, 0
-    for i, op in enumerate(ops):
-        p1 += sum(inp[i]) if op =='+' else prod(inp[i])
-        p2 += sum(inpP2[i]) if op =='+' else prod(inpP2[i])
+    for op, g1, g2 in zip(ops.split(), groupsP1, groupsP2):
+        p1 += apply[op](g1)
+        p2 += apply[op](g2)
     print(p1)
     print(p2)
