@@ -1,17 +1,9 @@
 from math import prod
+from itertools import groupby
 
 def transpose(d):
-    ret = []
-    column = [] 
-    for i in range(len(d[0])):
-        num = ''.join(d[j][i] for j in range(len(d)))
-        if num.strip():
-            column.append(int(num))
-        else:
-            ret.append(column)
-            column = []
-    ret.append(column)
-    return ret
+    ret = [int(x) if x.strip() else -1 for x in map(''.join, zip(*d))]
+    return [list(group) for key, group in groupby(ret, lambda k: k != -1) if key]
 
 with open("input.txt", "r") as inputFile:
     apply = {'+': sum, '*': prod}
